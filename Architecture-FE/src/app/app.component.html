@@ -1,0 +1,17 @@
+<!-- nav -->
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="isToken">
+  <div class="navbar-nav">
+    <a class="nav-item nav-link" routerLink="/">Home</a>
+    <a class="nav-item nav-link" routerLink="/user">Users</a>
+    <a class="nav-item nav-link" (click)="logout()">Logout</a>
+  </div>
+</nav>
+
+<!-- main app container -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

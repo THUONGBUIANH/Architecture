@@ -1,0 +1,122 @@
+<h1>Users</h1>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">UserName</th>
+      <th scope="col">BirthDay</th>
+      <th scope="col">Email</th>
+      <th scope="col">Active</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ user.userName }}</td>
+      <td>{{ user.birthDay | date: "dd/MM/yyyy" }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.isDeleted == 0 ? "Active" : "InActive" }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-primary"
+          [disabled]="user.isDeleted == 0 ? false : true"
+          (click)="edit(user)"
+        >
+          <i class="fas fa-edit"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-danger"
+          [disabled]="user.isDeleted == 0 ? false : true"
+          (click)="active(user.id)"
+        >
+          <i class="far fa-calendar-times"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Modal user -->
+<div class="backdrop" [ngStyle]="{ display: displayEditModal }"></div>
+<div
+  class="modal"
+  [ngStyle]="{ display: displayEditModal }"
+  *ngIf="displayEditModal != 'none'"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit user</h5>
+        <button type="button" class="close" (click)="onCloseEditModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="text"
+              formControlName="email"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid': submitted && (f.email.errors || f.email.email)
+              }"
+            />
+            <div
+              *ngIf="submitted && (f.email.errors || f.email.email)"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f.email.errors.required">Email is required</div>
+              <div *ngIf="f.email.errors.email">
+                Email must be a valid email address(example: abc@abc.com)
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="birthday">BirthDay</label>
+            <my-date-picker
+              name="birthday"
+              [options]="myDatePickerOptions"
+              formControlName="birthday"
+            >
+            </my-date-picker>
+            <div
+              *ngIf="submitted && f.birthday.errors"
+              class="invalid-feedback-datepicker"
+            >
+              <div *ngIf="f.birthday.errors.required">Birthday is required</div>
+            </div>
+          </div>
+          <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <img
+          *ngIf="loading"
+          class="pl-2"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />
+        <button
+          type="button"
+          [disabled]="loading"
+          class="btn btn-success"
+          (click)="onSubmit()"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onCloseEditModal()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End modal user -->

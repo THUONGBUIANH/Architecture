@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Architecture_BE.Business</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Architecture-BE.DAL\Architecture-BE.DAL.csproj" />
+    <ProjectReference Include="..\Architecture-BE.Helper\Architecture-BE.Helper.csproj" />
+  </ItemGroup>
+
+</Project>
